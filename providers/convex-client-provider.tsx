@@ -7,21 +7,15 @@ import {
     ConvexReactClient
 } from "convex/react";
 
-interface ConvexClientProviderProps {
-    children: React.ReactNode;
-};
-
-const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL!;
+const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL as string);
 
 
-const convex = new ConvexReactClient(convexUrl);
-
-export const ConvexClientProvider = ({ children }: ConvexClientProviderProps) => {
+export const ConvexClientProvider = ({ children }: {children : React.ReactNode}) => {
     return (
-        <ClerkProvider>
-            <ConvexProviderWithClerk useAuth={useAuth} client={convex}>
-                {children}
-            </ConvexProviderWithClerk>
-        </ClerkProvider>
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+        <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+            {children}
+        </ConvexProviderWithClerk>
+      </ClerkProvider>
     )
 }

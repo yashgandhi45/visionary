@@ -30,15 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ConvexClientProvider>
-        {/* Conditional rendering based on authentication */}
-                    <SignedIn>
-            {/* Content visible to signed-in users */}
-            {children}
-          </SignedIn>
-          <SignedOut>
-            {/* Redirect or show content for signed-out users */}
-            <RedirectToSignIn />
-          </SignedOut>
+          {children}
         </ConvexClientProvider>
       </body>
     </html>
