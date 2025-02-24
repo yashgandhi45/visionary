@@ -6,7 +6,7 @@ import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} fr
 export const EmptyOrg = () => {
     return (
         <div className="h-full flex flex-col items-center justify-center">
-            <Image src="/Home.jpg" width={400} height={400} alt="Empty"/>
+            <Image src="/placeholders/2.svg" width={400} height={400} alt="Empty"/>
             <h2 className='text-2xl font-semibold mt-6'>Welcome to Visionary</h2>
             <p className='text-muted-foreground text-sm mt-2'>Create an Organization to get Started</p>
             <div className='mt-6'>

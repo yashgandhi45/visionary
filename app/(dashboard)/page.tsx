@@ -1,16 +1,18 @@
-"use client";
+"use client";;
+import { use } from "react";
 import { BoardList } from "./_components/boardlist";
 import { EmptyOrg } from "./_components/emptyorg";
 import { useOrganization } from "@clerk/nextjs";
 
 interface DashBoardPageProps {
-    searchParams : {
+    searchParams : Promise<{
         search?:string;
         favorites?:string;
-    }
+    }>
 }
 
-export const DashBoardPage = ({searchParams}: DashBoardPageProps) => {
+export const DashBoardPage = (props: DashBoardPageProps) => {
+    const searchParams = use(props.searchParams);
     const {organization} = useOrganization();
     return (
         <div className="flex-1 h-[calc(100%-80px)] p-6">
