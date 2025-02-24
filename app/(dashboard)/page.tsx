@@ -11,15 +11,16 @@ interface DashBoardPageProps {
     }>
 }
 
-export default function DashBoardPage(props: DashBoardPageProps) {
+export const DashBoardPage = (props: DashBoardPageProps) => {
     const searchParams = use(props.searchParams);
     const {organization} = useOrganization();
     return (
         <div className="flex-1 h-[calc(100%-80px)] p-6">
             {JSON.stringify(searchParams)}
             {!organization ? <EmptyOrg/> : (
-                <BoardList query={searchParams}/>
+                <BoardList orgId = {organization.id} query={searchParams}/>
             )}
         </div>
     )
 }
+export default DashBoardPage;

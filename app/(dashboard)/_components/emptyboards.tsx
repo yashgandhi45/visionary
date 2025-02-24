@@ -2,12 +2,13 @@
 import { useOrganization } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/useapimutation";
 
 export const EmptyBoards = () => {
     const {organization} = useOrganization();
-    const {mutate, pending} = useApiMutation(api.board.create);
+    const {mutate,pending} = useApiMutation(api.board.create);
     const onClick = () => {
 
         if(!organization) return;
