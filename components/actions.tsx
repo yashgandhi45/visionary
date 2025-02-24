@@ -1,12 +1,13 @@
 "use client";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 import {DropdownMenu, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem} from "@/components/ui/dropdown-menu";
-import { Link2, Trash2 } from "lucide-react";
+import { Link2, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useApiMutation } from "@/hooks/useapimutation";
 import { api } from "@/convex/_generated/api";
 import { ConfirmModal } from "./confirmmodal";
 import { Button } from "@/components/ui/button";
+import { useRenameModal } from "@/store/use-rename-modal";
 
 interface ActionsProps {
     children: React.ReactNode;
@@ -17,6 +18,7 @@ interface ActionsProps {
 }
 
 export const Actions = ({children, side, sideOffset, id, title}:ActionsProps) => {
+    const {onOpen} = useRenameModal();
     const {mutate, pending} = useApiMutation(api.board.remove)
     const onCopyLink = () => {
         navigator.clipboard.writeText(
@@ -40,6 +42,10 @@ export const Actions = ({children, side, sideOffset, id, title}:ActionsProps) =>
                 <DropdownMenuItem className="p-3 cursor-pointer" onClick={onCopyLink}>
                     <Link2 className="h-4 w-4 mr-2"/>
                     Copy board Link
+                </DropdownMenuItem>
+                <DropdownMenuItem className="p-3 cursor-pointer" onClick={()=>onOpen(id, title)}>
+                    <Pencil className="h-4 w-4 mr-2"/>
+                    Rename
                 </DropdownMenuItem>
                 <ConfirmModal header="Delete board?" description="This will delete the board and all of its contents." disabled={pending} onConfirm={onDelete}>
                 <Button variant="ghost" className="p-3 cursor-pointer text-sm w-full justify-start font-normal" >
