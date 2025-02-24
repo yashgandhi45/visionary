@@ -11,7 +11,7 @@ interface DashBoardPageProps {
     }>
 }
 
-export const DashBoardPage = (props: DashBoardPageProps) => {
+export default function DashBoardPage(props: DashBoardPageProps) {
     const searchParams = use(props.searchParams);
     const {organization} = useOrganization();
     return (
@@ -23,4 +23,3 @@ export const DashBoardPage = (props: DashBoardPageProps) => {
         </div>
     )
 }
-export default DashBoardPage;
