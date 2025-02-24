@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/useapimutation";
+import { toast } from "sonner";
 
 export const EmptyBoards = () => {
     const {organization} = useOrganization();
@@ -15,7 +16,11 @@ export const EmptyBoards = () => {
         mutate ({
             orgId : organization.id,
             title : "Untitled"
-        });
+        })
+        .then((id)=>{
+            toast.success("Board Created")
+        })
+        .catch(()=> toast.error("Failed to create board"));
     };
     return (
         <div className="h-full flex flex-col items-center justify-center">
