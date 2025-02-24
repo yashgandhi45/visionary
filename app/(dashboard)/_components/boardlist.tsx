@@ -5,6 +5,7 @@ import { EmptyFavorites } from "./emptyfavorites";
 import { EmptyBoards } from "./emptyboards";
 
 interface BoardListProps {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     orgId: string;
     query: {
         search?: string;
