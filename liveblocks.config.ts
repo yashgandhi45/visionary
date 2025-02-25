@@ -7,7 +7,7 @@ import {
 import { createRoomContext } from "@liveblocks/react";
 
 const client = createClient({
-  publicApiKey: "pk_dev_9izu-AM5VTAxjCyPPcA0LaU3oBWpPdTV1UXbvtMRUx0R3EH6EKuCyAxKrhqeGx3a", // Make sure this is set in .env
+  authEndpoint: "/api/liveblocks-auth",
   async resolveUsers({ userIds }) {
     // Implement fetching user data based on userIds
     return [];
