@@ -5,12 +5,12 @@ import { useOthersConnectionIds } from "@/liveblocks.config";
 import { Cursor } from "./cursor";
 
 const Cursors = () => {
-    const ids = useOthersConnectionIds() || []; // Safe fallback to an empty array
+    const ids = useOthersConnectionIds();
     return (
         <>
             {ids.map((connectionId) => (
                 <Cursor
-                    key={connectionId} // Ensure connectionId is unique
+                    key={connectionId}
                     connectionId={connectionId}
                 />
             ))}

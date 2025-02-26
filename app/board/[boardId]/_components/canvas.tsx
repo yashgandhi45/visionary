@@ -24,10 +24,6 @@ export const Canvas = ({boardId}: CanvasProps) => {
     const canRedo = useCanRedo();
 
     const onWheel = useCallback((e: React.WheelEvent)=> {
-        console.log({
-            x: e.deltaX,
-            y: e.deltaY
-        });
         setCamera((camera)=> ({
             x: camera.x - e.deltaX,
             y: camera.y - e.deltaY
@@ -37,22 +33,21 @@ export const Canvas = ({boardId}: CanvasProps) => {
     const onPointerMove = useMutation(({ setMyPresence }, e: React.PointerEvent) => {
             e.preventDefault();
             const current = pointerEventToCanvasPoint(e, camera); 
-            console.log({current});
             setMyPresence({ cursor: current });
     },[]);
 
-    // const onPointerLeave = useMutation((
-    //     { setMyPresence}
-    // ) => {
-    //     setMy
-    // })
+    const onPointerLeave = useMutation((
+        {setMyPresence}
+    ) => {
+        setMyPresence({cursor: null});
+    },[])
 
     return (
         <main className="h-full w-full relative bg-neutral-100 touch-none">
             <Info boardId={boardId}/>
             <Participants/>
             <Toolbar canvasState={canvasState} setCanvasState={setCanvasState} canRedo={canRedo} canUndo={canUndo} undo= {history.undo} redo={history.redo} />
-            <svg className="h-[100vh] w-[100vw]" onWheel={onWheel} onPointerMove={onPointerMove}>
+            <svg className="h-[100vh] w-[100vw]" onWheel={onWheel} onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
                 <g>
                     <CursorsPresence/>
                 </g>

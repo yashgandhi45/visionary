@@ -32,8 +32,7 @@ export const Navbar = () => {
                 }
             }}/>
             </div>
-            {organization && (
-            <InviteButton/>)}
+            {organization && <InviteButton/>}
             <UserButton/>
         </div>
     )

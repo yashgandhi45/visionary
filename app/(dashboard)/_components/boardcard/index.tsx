@@ -23,7 +23,16 @@ interface BoardCardProps {
     
 }
 
-export const BoardCard = ({id, title, authorId, authorName, createdAt, imageUrl, orgId, isFavorite}: BoardCardProps ) => {
+export const BoardCard = ({
+        id,
+        title,
+        authorId,
+        authorName, 
+        createdAt, 
+        imageUrl, 
+        orgId, 
+        isFavorite
+    }: BoardCardProps ) => {
     const { userId } = useAuth();
     const authorLabel = userId === authorId ? "You" : authorName;
     const createdAtLabel = formatDistanceToNow(createdAt, {
@@ -42,7 +51,7 @@ export const BoardCard = ({id, title, authorId, authorName, createdAt, imageUrl,
     };
     return (
         <Link href={`/board/${id}`}>
-            <div className="group aspect-[100/127] border rounded-lg flex flex-col justify-between overflow-hidden">
+            <div className="group aspect-[100/127] border rounded-lg flex flex-col justify-center overflow-hidden">
                 <div className="relative flex-1 bg-amber-50">
                     <Image src={imageUrl} alt = {title} fill className="object-fit"/>
                     <Overlay/>
