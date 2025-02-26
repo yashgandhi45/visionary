@@ -12,18 +12,18 @@ const liveblocks = new Liveblocks({
 
 
 export async function POST(request: Request){
-    const authoriation = await auth();
+    const authorization = await auth();
     const user = await currentUser();
 
 
-    if(!authoriation || !user){
+    if(!authorization || !user){
         return new Response("Unauthorized", { status: 403})
     }
     const {room } = await request.json();
     const board = await convex.query(api.board.get, {id: room});
 
 
-    if(board?.orgId!== authoriation.orgId){
+    if(board?.orgId!== authorization.orgId){
         return new Response("Unauthorized");
     }
 

@@ -7,6 +7,7 @@ import {
 import { createRoomContext } from "@liveblocks/react";
 
 const client = createClient({
+  throttle: 16,
   authEndpoint: "/api/liveblocks-auth",
   async resolveUsers({ userIds }) {
     // Implement fetching user data based on userIds
@@ -25,7 +26,7 @@ const client = createClient({
 // Define Presence type
 type Presence = {
   // Example: cursor, selection, etc.
-  cursor?: { x: number; y: number } | null;
+  cursor: { x: number; y: number } | null;
   selection?: string[];
 };
 
@@ -66,6 +67,7 @@ export const {
     useOthers,
     useOthersMapped,
     useOthersListener,
+    useOthersConnectionIds,
     useOther,
     useBroadcastEvent,
     useEventListener,
