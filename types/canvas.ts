@@ -106,9 +106,13 @@ export type CanvasState =
         current?: Point;
     }
     | {
-        mode: CanvasMode.Inserting,
-        layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note
-    }
+        mode: CanvasMode.Inserting;
+        layerType:
+          | LayerType.Ellipse
+          | LayerType.Rectangle
+          | LayerType.Text
+          | LayerType.Note;
+      }
     | {
         mode: CanvasMode.Resizing,
         initialBounds: XYWH;
@@ -127,3 +131,5 @@ export enum CanvasMode {
     Resizing,
     Pencil,
 }
+
+export type Layer = | RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer;

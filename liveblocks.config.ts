@@ -6,6 +6,8 @@ import {
 } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 
+import { Layer, Color} from "@/types/canvas";
+
 const client = createClient({
   throttle: 16,
   authEndpoint: "/api/liveblocks-auth",
@@ -32,8 +34,8 @@ type Presence = {
 
 // Define Storage type
 type Storage = {
-  // Example: layers, layerIds, etc.
-  layers?: LiveMap<string, LiveObject<any>>;
+  layers?: LiveMap<string, LiveObject<Layer>>;
+  layerIds: LiveList<string>;
 };
 
 // Define UserMeta type
