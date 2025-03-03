@@ -6,11 +6,12 @@ import { Participants } from "./participants";
 import { Toolbar } from "./toolbar";
 import { useHistory, useCanRedo, useCanUndo, useMutation, useStorage, useOthersMapped } from "@/liveblocks.config";
 import { CursorsPresence } from "./cursorspresence";
-import { connectionIdToColor, pointerEventToCanvasPoint, resizeBounds } from "@/lib/utils";
+import { connectionIdToColor, pointerEventToCanvasPoint, resizeBounds, findIntersectingLayersWithRectangle } from "@/lib/utils";
 import { nanoid} from "nanoid";
 import { LayerPreview } from "./layerpreview";
 import { LiveObject } from "@liveblocks/client";
 import { SelectionBox } from "./selectionbox";
+import { SelectionTools } from "./selectiontools";
 
 const MAX_LAYERS = 100;
 
@@ -126,6 +127,46 @@ const unselectLayer = useMutation(({ self, setMyPresence }) => {
     }
 }, []);
 
+const updateSelectionNet = useMutation((
+    { storage, setMyPresence},
+    current: Point,
+    origin: Point
+) => {
+    const layers = storage.get("layers")?.toImmutable();
+
+    if (!layers) {
+        console.warn("layers is undefined.");
+        return;
+    }
+    setCanvasState({
+        mode: CanvasMode.SelectionNet,
+        origin,
+        current,
+    });
+
+    const ids = findIntersectingLayersWithRectangle(
+        layerIds,
+        layers,
+        origin,
+        current
+    );
+    setMyPresence({ selection: ids});
+},[layerIds])
+
+const startMultiSelection = useCallback((
+    current: Point,
+    origin: Point,
+) => {
+    if(
+        Math.abs(current.x - origin.x) + Math.abs(current.y - origin.y) > 5
+    ){
+        setCanvasState({
+            mode: CanvasMode.SelectionNet,
+            origin,
+            current
+        })
+    }
+}, [])
 
 const resizeSelectedLayer = useMutation(
     ({ storage, self }, point: Point) => {
@@ -184,7 +225,15 @@ const resizeSelectedLayer = useMutation(
             e.preventDefault();
             const current = pointerEventToCanvasPoint(e, camera);
 
-            if( canvasState.mode === CanvasMode.Translating){
+            if(canvasState.mode === CanvasMode.Pressing){
+                startMultiSelection(current, canvasState.origin);
+            }
+            
+            else if(canvasState.mode === CanvasMode.SelectionNet){
+                updateSelectionNet(current, canvasState.origin);
+            }
+
+            else if( canvasState.mode === CanvasMode.Translating){
                 translateSelectedLayers(current);
             }
 
@@ -291,6 +340,10 @@ const resizeSelectedLayer = useMutation(
             <Info boardId={boardId}/>
             <Participants/>
             <Toolbar canvasState={canvasState} setCanvasState={setCanvasState} canRedo={canRedo} canUndo={canUndo} undo= {history.undo} redo={history.redo} />
+            <SelectionTools
+                camera={camera}
+                setLastUsedColor = {setLastUsedColor}
+            />
             <svg className="h-[100vh] w-[100vw]" onWheel={onWheel} onPointerMove={onPointerMove} onPointerLeave={onPointerLeave} onPointerUp={onPointerUp} onPointerDown={onPointerDown}>
                 <g style = {{
                     transform: `translate(${camera.x}px, ${camera.y}px)`
@@ -306,6 +359,15 @@ const resizeSelectedLayer = useMutation(
                     <SelectionBox
                         onResizeHandlePointerDown = {onResizeHandlePointerDown}
                     />
+                    {canvasState.mode === CanvasMode.SelectionNet && canvasState.current != null && (
+                        <rect
+                            className="fill-blue-500/5 stroke-blue-500 stroke-1"
+                            x={Math.min(canvasState.origin.x, canvasState.current.x)}
+                            y={Math.min(canvasState.origin.y, canvasState.current.y)}
+                            width={Math.abs(canvasState.origin.x - canvasState.current.x)}
+                            height={Math.abs(canvasState.origin.y - canvasState.current.y)}
+                        />
+                    )}
                     <CursorsPresence/>
                 </g>
             </svg>
